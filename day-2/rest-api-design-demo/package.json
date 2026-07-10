@@ -1,0 +1,1 @@
+{"name":"rest-api-design-demo","private":true,"scripts":{"dev":"tsx watch src/server.ts","start":"tsx src/server.ts"},"dependencies":{"express":"^4.19.2","swagger-ui-express":"^5.0.1","yamljs":"^0.3.0","zod":"^4.4.3"},"devDependencies":{"@types/express":"^5","tsx":"^4","typescript":"^5"}}

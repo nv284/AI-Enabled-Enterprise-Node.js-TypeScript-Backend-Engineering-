@@ -1,0 +1,10 @@
+openapi: 3.0.3
+info:
+  title: Student API
+  version: v1
+paths:
+  /api/v1/students:
+    get:
+      responses:
+        '200':
+          description: OK

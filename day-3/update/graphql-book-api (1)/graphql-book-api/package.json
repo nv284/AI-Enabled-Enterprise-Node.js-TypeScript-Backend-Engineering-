@@ -1,0 +1,27 @@
+{
+  "name": "graphql-book-api",
+  "version": "1.0.0",
+  "description": "Production-ready Apollo Server + TypeScript GraphQL demo (schema design, resolvers, N+1 optimization via DataLoader).",
+  "main": "dist/server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "ts-node --watch src/server.ts",
+    "start": "ts-node src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "serve": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.13.0",
+    "dataloader": "^2.2.2",
+    "graphql": "^16.14.2",
+    "graphql-tag": "^2.12.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}

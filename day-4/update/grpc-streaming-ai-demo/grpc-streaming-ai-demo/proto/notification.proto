@@ -1,0 +1,15 @@
+syntax="proto3";
+package notification;
+
+service NotificationService{
+  rpc Subscribe(NotificationRequest) returns (stream Notification);
+}
+
+message NotificationRequest{
+ string user=1;
+}
+
+message Notification{
+ string title=1;
+ string message=2;
+}

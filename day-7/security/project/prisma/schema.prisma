@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  name         String?
+  // Local login users have a passwordHash. Google-only users don't.
+  passwordHash String?
+  role         String   @default("user") // "user" | "admin"
+  googleSub    String?  @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  notes         Note[]
+  refreshTokens RefreshToken[]
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  // sha256 of the raw refresh token; the raw token is never stored.
+  tokenHash String   @unique
+  // Family ID: rotation preserves it; reuse-detection revokes the whole family.
+  familyId  String
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([familyId])
+}

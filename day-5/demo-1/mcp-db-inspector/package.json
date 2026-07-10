@@ -1,0 +1,28 @@
+{
+  "name": "mcp-db-inspector",
+  "version": "1.0.0",
+  "types": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "@types/sqlite3": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.0",
+    "typescript": "^6.0.3"
+  }
+}

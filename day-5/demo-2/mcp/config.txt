@@ -1,0 +1,8 @@
+
+  "mcpServers": {
+    "support-ticket-server": {
+      "command": "node",
+      "args": [
+        "D:\\Nishi\\edForch_Michlin\\Code_demos\\week-1\\day-5\\demo-2\\mcp\\dist\\index.js"
+      ]
+    }

@@ -1,0 +1,38 @@
+node_modules/
+dist/
+build/
+coverage/
+.nyc_output/
+
+# clinic.js output
+.clinic/
+*.clinic-*
+*.html
+
+# env & local
+.env
+.env.local
+.env.*.local
+
+# editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# training deliverables — commit if you want; ignore if private
+# notes.md
+# review.md
+# AI-REVIEW.md
+# LOAD-REPORT.md
+# capstone-plan.md

@@ -1,0 +1,26 @@
+{
+  "name": "mcp-support-tickets",
+  "version": "1.0.0",
+  "description": "A minimal Model Context Protocol (MCP) server exposing a Support Tickets backend as tools for LLMs.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "mcp-support-tickets": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch",
+    "inspect": "npx --yes @modelcontextprotocol/inspector node dist/index.js"
+  },
+  "keywords": ["mcp", "model-context-protocol", "llm", "training", "demo"],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.0",
+    "typescript": "^5.6.2"
+  }
+}

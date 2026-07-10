@@ -1,0 +1,64 @@
+### Module 02 — hit each strategy and compare
+
+@base = http://localhost:3002
+
+# ---------- CACHE-ASIDE ----------
+
+### Cold read — should be ~200 ms (DB latency)
+GET {{base}}/aside/products/1
+
+### Immediately again — should be ~1–5 ms (cache hit)
+GET {{base}}/aside/products/1
+
+### Update — cache is INVALIDATED, next read will miss again
+PATCH {{base}}/aside/products/1
+Content-Type: application/json
+
+{
+  "price": 149
+}
+
+### Read again — cold again (~200 ms)
+GET {{base}}/aside/products/1
+
+
+# ---------- WRITE-THROUGH ----------
+
+### Warm the cache
+GET {{base}}/through/products/2
+
+### Update — cache is REWRITTEN in the same request
+PATCH {{base}}/through/products/2
+Content-Type: application/json
+
+{
+  "price": 25
+}
+
+### Read — still fast because write-through kept the cache warm
+GET {{base}}/through/products/2
+
+
+# ---------- WRITE-BEHIND ----------
+
+### Update — should return in a few ms (DB write is deferred)
+PATCH {{base}}/behind/products/3
+Content-Type: application/json
+
+{
+  "stock": 999
+}
+
+### Read — hits the just-updated cache
+GET {{base}}/behind/products/3
+
+
+# ---------- Peek at cache keys ----------
+GET {{base}}/_cache/cache:product:1
+GET {{base}}/_cache/cache:product:2
+GET {{base}}/_cache/cache:product:3
+
+
+# ---------- List endpoint (cache-aside, TTL 30s) ----------
+GET {{base}}/products
+GET {{base}}/products

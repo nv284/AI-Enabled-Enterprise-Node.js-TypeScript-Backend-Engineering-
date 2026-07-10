@@ -1,0 +1,598 @@
+openapi: 3.1.0
+info:
+  title: Book Management API
+  version: 1.0.0
+  summary: RESTful Book Management API
+  description: |
+    Production-ready OpenAPI 3.1 specification demonstrating:
+
+    - CRUD Operations
+    - Pagination
+    - Sorting
+    - Filtering
+    - JWT Authentication
+    - Request Validation
+    - Reusable Components
+    - Standard Error Responses
+    - REST Best Practices
+    - Examples
+
+servers:
+  - url: https://api.bookstore.com/v1
+    description: Production
+
+  - url: http://localhost:3000/api/v1
+    description: Local Development
+
+tags:
+  - name: Authentication
+    description: User Authentication
+
+  - name: Books
+    description: Book Management Operations
+
+security:
+  - bearerAuth: []
+
+paths:
+
+  /auth/login:
+
+    post:
+      tags:
+        - Authentication
+
+      summary: Login User
+
+      security: []
+
+      requestBody:
+        required: true
+
+        content:
+          application/json:
+
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+
+            examples:
+              login:
+                value:
+                  email: admin@example.com
+                  password: Admin@123
+
+      responses:
+
+        '200':
+          description: Login Successful
+
+          content:
+            application/json:
+
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /books:
+
+    get:
+
+      tags:
+        - Books
+
+      summary: Get Books
+
+      description: |
+        Returns paginated books with filtering and sorting.
+
+      parameters:
+
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum:
+              - title
+              - author
+              - publishedYear
+
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+
+        - name: author
+          in: query
+          schema:
+            type: string
+
+        - name: genre
+          in: query
+          schema:
+            type: string
+
+        - name: available
+          in: query
+          schema:
+            type: boolean
+
+      responses:
+
+        '200':
+
+          description: Book List
+
+          content:
+
+            application/json:
+
+              schema:
+                $ref: '#/components/schemas/BookListResponse'
+
+              examples:
+
+                success:
+
+                  value:
+
+                    page: 1
+
+                    limit: 10
+
+                    totalRecords: 2
+
+                    totalPages: 1
+
+                    data:
+
+                      - id: 1
+                        title: Clean Code
+                        author: Robert Martin
+                        genre: Programming
+                        isbn: "9780132350884"
+                        publishedYear: 2008
+                        available: true
+
+                      - id: 2
+                        title: Effective Java
+                        author: Joshua Bloch
+                        genre: Programming
+                        isbn: "9780134685991"
+                        publishedYear: 2018
+                        available: true
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+
+      tags:
+        - Books
+
+      summary: Create Book
+
+      requestBody:
+
+        required: true
+
+        content:
+
+          application/json:
+
+            schema:
+              $ref: '#/components/schemas/CreateBookRequest'
+
+            examples:
+
+              sample:
+
+                value:
+
+                  title: Domain Driven Design
+                  author: Eric Evans
+                  genre: Programming
+                  isbn: "9780321125217"
+                  publishedYear: 2004
+                  available: true
+
+      responses:
+
+        '201':
+
+          description: Book Created
+
+          content:
+
+            application/json:
+
+              schema:
+                $ref: '#/components/schemas/Book'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /books/{bookId}:
+
+    parameters:
+
+      - name: bookId
+        in: path
+        required: true
+
+        schema:
+          type: integer
+          minimum: 1
+
+    get:
+
+      tags:
+        - Books
+
+      summary: Get Book By Id
+
+      responses:
+
+        '200':
+
+          description: Book Found
+
+          content:
+
+            application/json:
+
+              schema:
+                $ref: '#/components/schemas/Book'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+
+      tags:
+        - Books
+
+      summary: Update Book
+
+      requestBody:
+
+        required: true
+
+        content:
+
+          application/json:
+
+            schema:
+              $ref: '#/components/schemas/UpdateBookRequest'
+
+      responses:
+
+        '200':
+
+          description: Updated Successfully
+
+          content:
+
+            application/json:
+
+              schema:
+                $ref: '#/components/schemas/Book'
+
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+
+      tags:
+        - Books
+
+      summary: Delete Book
+
+      responses:
+
+        '204':
+          description: Deleted Successfully
+
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+
+  securitySchemes:
+
+    bearerAuth:
+
+      type: http
+
+      scheme: bearer
+
+      bearerFormat: JWT
+
+  schemas:
+
+    LoginRequest:
+
+      type: object
+
+      required:
+        - email
+        - password
+
+      properties:
+
+        email:
+          type: string
+          format: email
+
+        password:
+          type: string
+          minLength: 8
+
+    LoginResponse:
+
+      type: object
+
+      properties:
+
+        accessToken:
+          type: string
+
+        expiresIn:
+          type: integer
+
+    Book:
+
+      type: object
+
+      required:
+
+        - id
+        - title
+        - author
+        - genre
+        - isbn
+        - publishedYear
+        - available
+
+      properties:
+
+        id:
+          type: integer
+          example: 1
+
+        title:
+          type: string
+          maxLength: 150
+          example: Clean Code
+
+        author:
+          type: string
+          maxLength: 100
+          example: Robert Martin
+
+        genre:
+          type: string
+          example: Programming
+
+        isbn:
+          type: string
+          pattern: '^[0-9]{13}$'
+          example: "9780132350884"
+
+        publishedYear:
+          type: integer
+          minimum: 1800
+          maximum: 2100
+
+        available:
+          type: boolean
+
+    CreateBookRequest:
+
+      allOf:
+        - $ref: '#/components/schemas/Book'
+
+      required:
+        - title
+        - author
+        - genre
+        - isbn
+        - publishedYear
+
+      properties:
+
+        id:
+          readOnly: true
+
+    UpdateBookRequest:
+
+      type: object
+
+      properties:
+
+        title:
+          type: string
+          maxLength: 150
+
+        author:
+          type: string
+          maxLength: 100
+
+        genre:
+          type: string
+
+        isbn:
+          type: string
+          pattern: '^[0-9]{13}$'
+
+        publishedYear:
+          type: integer
+
+        available:
+          type: boolean
+
+    BookListResponse:
+
+      type: object
+
+      properties:
+
+        page:
+          type: integer
+
+        limit:
+          type: integer
+
+        totalRecords:
+          type: integer
+
+        totalPages:
+          type: integer
+
+        data:
+
+          type: array
+
+          items:
+            $ref: '#/components/schemas/Book'
+
+    Error:
+
+      type: object
+
+      properties:
+
+        timestamp:
+          type: string
+          format: date-time
+
+        status:
+          type: integer
+
+        error:
+          type: string
+
+        message:
+          type: string
+
+        path:
+          type: string
+
+  responses:
+
+    BadRequest:
+
+      description: Invalid Request
+
+      content:
+
+        application/json:
+
+          schema:
+            $ref: '#/components/schemas/Error'
+
+          examples:
+
+            validation:
+
+              value:
+
+                timestamp: "2026-07-03T12:00:00Z"
+                status: 400
+                error: Bad Request
+                message: ISBN must contain exactly 13 digits.
+                path: /books
+
+    Unauthorized:
+
+      description: Unauthorized
+
+      content:
+
+        application/json:
+
+          schema:
+            $ref: '#/components/schemas/Error'
+
+          examples:
+
+            unauthorized:
+
+              value:
+
+                timestamp: "2026-07-03T12:00:00Z"
+                status: 401
+                error: Unauthorized
+                message: Invalid or expired JWT token.
+                path: /books
+
+    NotFound:
+
+      description: Resource Not Found
+
+      content:
+
+        application/json:
+
+          schema:
+            $ref: '#/components/schemas/Error'
+
+          examples:
+
+            notFound:
+
+              value:
+
+                timestamp: "2026-07-03T12:00:00Z"
+                status: 404
+                error: Not Found
+                message: Book not found.
+                path: /books/100
+
+    InternalServerError:
+
+      description: Internal Server Error
+
+      content:
+
+        application/json:
+
+          schema:
+            $ref: '#/components/schemas/Error'
+
+          examples:
+
+            serverError:
+
+              value:
+
+                timestamp: "2026-07-03T12:00:00Z"
+                status: 500
+                error: Internal Server Error
+                message: Unexpected server error.
+                path: /books

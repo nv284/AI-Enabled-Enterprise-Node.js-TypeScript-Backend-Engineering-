@@ -1,0 +1,77 @@
+### Secure Notes API — quick tests
+### Open this file in VS Code with the "REST Client" extension.
+### Click "Send Request" above each block.
+
+@host = http://localhost:3000
+@email = ada@example.com
+@password = correct horse battery staple
+
+### Health
+GET {{host}}/health
+
+### Register
+POST {{host}}/auth/register
+content-type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "name": "Ada"
+}
+
+### Login
+# @name login
+POST {{host}}/auth/login
+content-type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+###
+@accessToken = {{login.response.body.accessToken}}
+@refreshToken = {{login.response.body.refreshToken}}
+
+### Me
+GET {{host}}/me
+authorization: Bearer {{accessToken}}
+
+### Create note
+# @name newNote
+POST {{host}}/notes
+authorization: Bearer {{accessToken}}
+content-type: application/json
+
+{
+  "title": "First note",
+  "body": "Hello, secure world."
+}
+
+### List my notes
+GET {{host}}/notes
+authorization: Bearer {{accessToken}}
+
+### Get one
+GET {{host}}/notes/{{newNote.response.body.id}}
+authorization: Bearer {{accessToken}}
+
+### Rotate refresh
+POST {{host}}/auth/refresh
+content-type: application/json
+
+{ "refreshToken": "{{refreshToken}}" }
+
+### Logout
+POST {{host}}/auth/logout
+content-type: application/json
+
+{ "refreshToken": "{{refreshToken}}" }
+
+### Admin: users (needs admin role — promote a user via `npx prisma studio`)
+GET {{host}}/admin/users
+authorization: Bearer {{accessToken}}
+
+### Google Sign-In (only if GOOGLE_CLIENT_ID/SECRET set in .env)
+# Open in a browser instead of REST Client:
+# http://localhost:3000/auth/google/start

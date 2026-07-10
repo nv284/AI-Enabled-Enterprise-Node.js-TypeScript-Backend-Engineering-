@@ -1,0 +1,25 @@
+{
+  "name": "01-redis-fundamentals",
+  "version": "1.0.0",
+  "description": "Redis fundamentals — strings, hashes, lists, sets, sorted sets, TTL",
+  "private": true,
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "strings": "ts-node src/strings.ts",
+    "hashes": "ts-node src/hashes.ts",
+    "lists": "ts-node src/lists.ts",
+    "sets": "ts-node src/sets.ts",
+    "zsets": "ts-node src/zsets.ts",
+    "ttl": "ts-node src/ttl.ts",
+    "pipeline": "ts-node src/pipeline.ts"
+  },
+  "dependencies": {
+    "ioredis": "^5.4.1",
+    "redis": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  }
+}

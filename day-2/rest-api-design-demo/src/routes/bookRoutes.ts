@@ -1,0 +1,1 @@
+import {Router} from 'express';import * as c from '../controllers/bookController.js';const r=Router();r.get('/books',c.getBooks);r.get('/books/:id',c.getBook);r.post('/books',c.createBook);r.put('/books/:id',c.updateBook);r.delete('/books/:id',c.deleteBook);export default r;

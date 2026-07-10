@@ -1,0 +1,59 @@
+### Capstone — URL shortener
+
+@base = http://localhost:3006
+@me = alice
+
+### Meta
+GET {{base}}/
+GET {{base}}/_stats
+
+### 1) Create a short URL (rate-limit: 20 / min / ip)
+POST {{base}}/shorten
+Content-Type: application/json
+x-user-id: {{me}}
+
+{
+  "target": "https://nodejs.org/"
+}
+
+### 2) Grab the code from step 1 and set it here:
+@code = REPLACE_ME_WITH_CODE_FROM_STEP_1
+
+### 3) Public redirect — first call is a cache miss, subsequent calls are hits
+GET {{base}}/{{code}}
+
+### 4) Peek at cache
+GET {{base}}/_stats
+
+### 5) My URLs
+GET {{base}}/me/urls
+x-user-id: {{me}}
+
+### 6) Analytics (needs at least a few redirects first)
+GET {{base}}/analytics/{{code}}
+x-user-id: {{me}}
+
+### 7) Bad target
+POST {{base}}/shorten
+Content-Type: application/json
+x-user-id: {{me}}
+
+{ "target": "not-a-url" }
+
+### 8) 404 — negative cache kicks in on the second attempt
+GET {{base}}/nope123
+
+### 9) Delete
+DELETE {{base}}/{{code}}
+x-user-id: {{me}}
+
+### 10) Access someone else's code
+POST {{base}}/shorten
+Content-Type: application/json
+x-user-id: bob
+
+{ "target": "https://redis.io/" }
+
+### … then try to view its analytics as alice — should be 403
+GET {{base}}/analytics/CODE_OWNED_BY_BOB
+x-user-id: alice

@@ -1,0 +1,16 @@
+{
+  "name":"student-api-contract-first",
+  "private":true,
+  "scripts":{
+    "dev":"tsx src/server.ts"
+  },
+  "dependencies":{
+    "express":"^4.19.2",
+    "swagger-ui-express":"^5.0.1",
+    "yamljs":"^0.3.0"
+  },
+  "devDependencies":{
+    "typescript":"^5",
+    "tsx":"^4"
+  }
+}

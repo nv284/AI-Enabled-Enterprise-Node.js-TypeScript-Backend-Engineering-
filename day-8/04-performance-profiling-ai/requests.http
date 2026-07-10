@@ -1,0 +1,22 @@
+### Module 04 — hit the slow server manually before you load-test
+
+@base = http://localhost:3004
+
+### Baseline — no cache, blocks on DB latency
+GET {{base}}/hot
+
+### CPU-bound, blocks the event loop
+GET {{base}}/cpu
+
+### 50 sequential Redis calls per request
+GET {{base}}/n-plus-1
+
+### Sends 200 products in one response
+GET {{base}}/all
+
+### The cache key changes every request — cache is useless
+GET {{base}}/broken-cache/1
+
+### A working cached endpoint for comparison
+GET {{base}}/good/1
+GET {{base}}/good/1

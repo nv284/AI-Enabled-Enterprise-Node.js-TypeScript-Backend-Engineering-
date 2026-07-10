@@ -1,0 +1,25 @@
+### Module 03 — rate limiting
+
+@base = http://localhost:3003
+
+### Directory
+GET {{base}}/
+
+### Not limited
+GET {{base}}/open
+
+### Fixed window: 5 per 10 seconds — click 7 times fast, watch for 429
+GET {{base}}/fixed
+
+### Sliding window: 5 per 10 seconds — same limit, no boundary burst
+GET {{base}}/sliding
+
+### Per-user (free tier — 10/min)
+GET {{base}}/api
+x-user-id: u-100
+x-tier: free
+
+### Per-user (pro tier — 100/min)
+GET {{base}}/api
+x-user-id: u-100
+x-tier: pro

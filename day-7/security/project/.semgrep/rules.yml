@@ -1,0 +1,28 @@
+# Reuse Module 5 custom rules inside the project too.
+rules:
+  - id: jwt-verify-no-algorithms
+    languages: [typescript, javascript]
+    severity: ERROR
+    message: >
+      jwt.verify must be called with an explicit `algorithms` array.
+    patterns:
+      - pattern-either:
+          - pattern: jwt.verify($TOKEN, $KEY)
+          - pattern: jwt.verify($TOKEN, $KEY, { ... })
+      - pattern-not: jwt.verify($TOKEN, $KEY, { ..., algorithms: [...] })
+
+  - id: object-assign-req-body
+    languages: [typescript, javascript]
+    severity: ERROR
+    message: Object.assign($TARGET, req.body) enables mass assignment.
+    pattern: Object.assign($TARGET, req.body)
+
+  - id: raw-sql-string-concat
+    languages: [typescript, javascript]
+    severity: ERROR
+    message: Do not build SQL with string interpolation. Use tagged $queryRaw or ORM methods.
+    pattern-either:
+      - pattern: |
+          prisma.$queryRawUnsafe(`... ${$X} ...`)
+      - pattern: |
+          prisma.$queryRawUnsafe("..." + $X + "...")

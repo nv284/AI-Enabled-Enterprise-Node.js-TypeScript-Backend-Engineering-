@@ -1,0 +1,65 @@
+rules:
+  - id: jwt-verify-no-algorithms
+    languages: [typescript, javascript]
+    severity: ERROR
+    message: >
+      jwt.verify must be called with an explicit `algorithms` array. Without
+      it, callers may accept tokens signed with an unexpected algorithm
+      (algorithm confusion / alg=none attacks).
+    patterns:
+      - pattern-either:
+          - pattern: jwt.verify($TOKEN, $KEY)
+          - pattern: jwt.verify($TOKEN, $KEY, { ... })
+      - pattern-not: jwt.verify($TOKEN, $KEY, { ..., algorithms: [...] })
+
+  - id: hardcoded-jwt-secret
+    languages: [typescript, javascript]
+    severity: WARNING
+    message: >
+      JWT signing secret appears to be a string literal in source. Load from
+      process.env / a secret manager instead.
+    patterns:
+      - pattern-either:
+          - pattern: |
+              const $NAME = "..."
+          - pattern: |
+              let $NAME = "..."
+      - metavariable-regex:
+          metavariable: $NAME
+          regex: "(?i)(secret|jwt_secret|jwtsecret|token_secret|signingkey)"
+
+  - id: object-assign-req-body
+    languages: [typescript, javascript]
+    severity: ERROR
+    message: >
+      Object.assign($TARGET, req.body) allows mass assignment of arbitrary
+      attributes (including role/permissions). Validate & whitelist with a
+      schema (Zod .strict()) before merging.
+    pattern: Object.assign($TARGET, req.body)
+
+  - id: weak-hash-sha256-password
+    languages: [typescript, javascript]
+    severity: ERROR
+    message: >
+      SHA-256 is a fast, unsalted hash — unsuitable for passwords. Use argon2id
+      (or bcrypt cost >= 12) via a well-tested library.
+    pattern: createHash("sha256")
+
+  - id: express-redirect-user-input
+    languages: [typescript, javascript]
+    severity: WARNING
+    message: >
+      res.redirect() with user-controlled URL enables open redirect attacks.
+      Validate against a fixed allow-list of destinations.
+    patterns:
+      - pattern-either:
+          - pattern: res.redirect(req.query.$X)
+          - pattern: res.redirect($EXPR)
+      - metavariable-pattern:
+          metavariable: $EXPR
+          patterns:
+            - pattern-either:
+                - pattern: req.query.$X
+                - pattern: req.body.$X
+                - pattern: String(req.query.$X)
+                - pattern: String(req.body.$X)

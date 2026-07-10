@@ -1,0 +1,19 @@
+{
+  "name": "graphql-book-api",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "npx ts-node src/server.ts"
+  },
+  "dependencies": {
+    "@apollo/server": "^5.5.1",
+    "express": "^4",
+    "graphql": "^16.14.2",
+    "graphql-tag": "^2.12.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.0",
+    "typescript": "^6.0.3"
+  }
+}
