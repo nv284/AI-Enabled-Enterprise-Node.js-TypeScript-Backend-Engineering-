@@ -1,12 +1,8 @@
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AI Observability Dashboard</title>
@@ -14,132 +10,113 @@
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-
-    <!-- Chart JS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <!-- Chart.js -->
+    <script src="chart.min.js"></script>
 </head>
 
 <body>
 
-    <div class="container">
+    <!-- ========================= -->
+    <!-- Dashboard Header -->
+    <!-- ========================= -->
 
-        <!-- ===================================== -->
-        <!-- HEADER -->
-        <!-- ===================================== -->
+    <header class="header">
 
-        <header>
+        <div class="logo">
 
-            <div class="logo">
+            <h1>AI Observability Dashboard</h1>
 
-                <h1>
+            <p>
+                Intelligent Log Analysis & Request Monitoring
+            </p>
 
-                    AI Observability Dashboard
+        </div>
 
-                </h1>
+    </header>
 
-                <p>
 
-                    Logging • Monitoring • Tracing • AI Root Cause Analysis
 
-                </p>
+    <!-- ========================= -->
+    <!-- AI Analysis Cards -->
+    <!-- ========================= -->
 
-            </div>
+    <section class="cards-section">
 
-            <div class="header-right">
+        <!-- Total Logs -->
 
-                <div id="currentTime" class="clock">
+        <div class="card">
 
-                    --:--:--
+            <h3>Total Logs</h3>
 
-                </div>
+            <h1 id="totalLogs">0</h1>
 
-            </div>
+            <p>Total log entries processed</p>
 
-        </header>
+        </div>
 
-        <!-- ===================================== -->
-        <!-- KPI CARDS -->
-        <!-- ===================================== -->
 
-        <section class="cards">
+        <!-- Total Requests -->
 
-            <!-- Total Requests -->
+        <div class="card">
 
-            <div class="card">
+            <h3>Total Requests</h3>
 
-                <h3>Total Requests</h3>
+            <h1 id="totalRequests">0</h1>
 
-                <h2 id="totalRequests">
+            <p>Requests detected from logs</p>
 
-                    0
+        </div>
 
-                </h2>
 
-            </div>
+        <!-- Repeated Patterns -->
 
-            <!-- Total Errors -->
+        <div class="card">
 
-            <div class="card">
+            <h3>Repeated Patterns</h3>
 
-                <h3>Total Errors</h3>
+            <h1 id="repeatedPatterns">0</h1>
 
-                <h2 id="totalErrors">
+            <p>Recurring error/request patterns</p>
 
-                    0
+        </div>
 
-                </h2>
 
-            </div>
+        <!-- Root Cause -->
 
-            <!-- Active Requests -->
+        <div class="card">
 
-            <div class="card">
+            <h3>Root Cause</h3>
 
-                <h3>Active Requests</h3>
+            <h1 id="rootCause">--</h1>
 
-                <h2 id="activeRequests">
+            <p>Most probable issue detected</p>
 
-                    0
+        </div>
 
-                </h2>
+    </section>
 
-            </div>
+    <!-- ========================= -->
+    <!-- Health Status -->
+    <!-- ========================= -->
 
-            <!-- Uptime -->
+    <section class="health-section">
 
-            <div class="card">
+        <h2>System Health</h2>
 
-                <h3>Server Uptime</h3>
+        <div class="health-cards">
 
-                <h2 id="uptime">
-
-                    0 s
-
-                </h2>
-
-            </div>
-
-            <!-- Memory -->
+            <!-- Status -->
 
             <div class="card">
 
-                <h3>Memory Usage</h3>
+                <h3>Status</h3>
 
-                <h2 id="memory">
+                <h1 id="healthStatus">Checking...</h1>
 
-                    0 MB
-
-                </h2>
+                <p>Current server status</p>
 
             </div>
+
 
             <!-- CPU -->
 
@@ -147,647 +124,160 @@
 
                 <h3>CPU Usage</h3>
 
-                <h2 id="cpu">
+                <h1 id="cpuUsage">0%</h1>
 
-                    0 %
-
-                </h2>
+                <p>Processor utilization</p>
 
             </div>
 
-            <!-- Node Version -->
+
+            <!-- Memory -->
 
             <div class="card">
 
-                <h3>Node Version</h3>
+                <h3>Memory Usage</h3>
 
-                <h2 id="nodeVersion">
+                <h1 id="memoryUsage">0 MB</h1>
 
-                    --
-
-                </h2>
+                <p>Application memory</p>
 
             </div>
 
-            <!-- Health -->
+
+            <!-- Uptime -->
 
             <div class="card">
 
-                <h3>Application Health</h3>
+                <h3>Uptime</h3>
 
-                <h2 id="healthStatus" class="healthy">
+                <h1 id="uptime">0 sec</h1>
 
-                    HEALTHY
-
-                </h2>
+                <p>Server running time</p>
 
             </div>
-
-        </section>
-
-        <!-- ===================================== -->
-        <!-- CHART AREA -->
-        <!-- ===================================== -->
-
-        <section class="charts">
-
-            <!-- Response Time -->
-
-            <div class="chart-card">
-
-                <h2>
-
-                    API Response Time
-
-                </h2>
-
-                <canvas id="responseChart">
-
-                </canvas>
-
-            </div>
-
-            <!-- Error Distribution -->
-
-            <div class="chart-card">
-
-                <h2>
-
-                    Error Distribution
-
-                </h2>
-
-                <canvas id="errorChart">
-
-                </canvas>
-
-            </div>
-
-        </section>
-
-        <!-- ===================================== -->
-        <!-- SYSTEM STATUS -->
-        <!-- ===================================== -->
-
-        <section class="system-grid">
-
-            <div class="panel">
-
-                <h2>
-
-                    Application Status
-
-                </h2>
-
-                <table>
-
-                    <tr>
-
-                        <td>Status</td>
-
-                        <td id="status">
-
-                            UP
-
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Environment</td>
-
-                        <td id="environment">
-
-                            Development
-
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Hostname</td>
-
-                        <td id="hostname">
-
-                            localhost
-
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Platform</td>
-
-                        <td id="platform">
-
-                            Windows
-
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Architecture</td>
-
-                        <td id="architecture">
-
-                            x64
-
-                        </td>
-
-                    </tr>
-
-                </table>
-
-            </div>
-
-            <div class="panel">
-
-                <h2>
-
-                    Runtime Information
-
-                </h2>
-
-                <table>
-
-                    <tr>
-
-                        <td>Heap Used</td>
-
-                        <td id="heapUsed">
-
-                            0 MB
-
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>Heap Total</td>
-
-                        <td id="heapTotal">
-
-                            0 MB
-
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>RSS Memory</td>
-
-                        <td id="rssMemory">
-
-                            0 MB
-
-                        </td>
-
-                    </tr>
-
-                    <tr>
-
-                        <td>External Memory</td>
-
-                        <td id="externalMemory">
-
-                            0 MB
-
-                        </td>
-
-                    </tr>
-
-                </table>
-
-            </div>
-
-        </section>
-        <!-- ===================================== -->
-        <!-- AI ROOT CAUSE ANALYSIS -->
-        <!-- ===================================== -->
-
-        <section class="ai-section">
-
-            <div class="panel ai-panel">
-
-                <h2>
-                    AI Root Cause Analysis
-                </h2>
-
-                <div class="ai-content">
-
-                    <div class="ai-card">
-
-                        <h3>
-
-                            Detected Issue
-
-                        </h3>
-
-                        <p id="aiIssue">
-
-                            No Issue Detected
-
-                        </p>
-
-                    </div>
-
-                    <div class="ai-card">
-
-                        <h3>
-
-                            Confidence
-
-                        </h3>
-
-                        <p id="aiConfidence">
-
-                            0%
-
-                        </p>
-
-                    </div>
-
-                    <div class="ai-card">
-
-                        <h3>
-
-                            Recommendation
-
-                        </h3>
-
-                        <p id="aiRecommendation">
-
-                            System Running Normally
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ===================================== -->
-        <!-- LIVE LOGS -->
-        <!-- ===================================== -->
-
-        <section class="logs-section">
-
-            <div class="panel">
-
-                <div class="panel-header">
-
-                    <h2>
-
-                        Live Application Logs
-
-                    </h2>
-
-                    <span class="live-indicator">
-
-                        ● LIVE
-
-                    </span>
-
-                </div>
-
-                <div id="liveLogs" class="log-window">
-
-                    <div class="log-row info">
-
-                        Waiting for logs...
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ===================================== -->
-        <!-- RECENT REQUESTS -->
-        <!-- ===================================== -->
-
-        <section class="request-section">
-
-            <div class="panel">
-
-                <h2>
-
-                    Recent Requests
-
-                </h2>
-
-                <table class="request-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-
-                                Time
-
-                            </th>
-
-                            <th>
-
-                                Method
-
-                            </th>
-
-                            <th>
-
-                                Endpoint
-
-                            </th>
-
-                            <th>
-
-                                Status
-
-                            </th>
-
-                            <th>
-
-                                Response Time
-
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="requestTable">
-
-                        <tr>
-
-                            <td colspan="5">
-
-                                No Requests Yet
-
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-
-
-        <!-- ===================================== -->
-        <!-- SYSTEM SUMMARY -->
-        <!-- ===================================== -->
-
-        <section class="summary-section">
-
-            <div class="summary-card">
-
-                <h3>
-
-                    INFO Logs
-
-                </h3>
-
-                <h2 id="infoLogs">
-
-                    0
-
-                </h2>
-
-            </div>
-
-            <div class="summary-card">
-
-                <h3>
-
-                    WARNING Logs
-
-                </h3>
-
-                <h2 id="warningLogs">
-
-                    0
-
-                </h2>
-
-            </div>
-
-            <div class="summary-card">
-
-                <h3>
-
-                    ERROR Logs
-
-                </h3>
-
-                <h2 id="errorLogs">
-
-                    0
-
-                </h2>
-
-            </div>
-
-            <div class="summary-card">
-
-                <h3>
-
-                    Trace Requests
-
-                </h3>
-
-                <h2 id="traceRequests">
-
-                    0
-
-                </h2>
-
-            </div>
-
-        </section>
-
-
-        <!-- ===================================== -->
-        <!-- FOOTER -->
-        <!-- ===================================== -->
-
-        <footer>
-
-            <div class="footer-left">
-
-                <strong>
-
-                    AI Observability Platform
-
-                </strong>
-
-                <span>
-
-                    Version 1.0
-
-                </span>
-
-            </div>
-
-            <div class="footer-center">
-
-                Last Updated :
-
-                <span id="lastUpdated">
-
-                    --
-
-                </span>
-
-            </div>
-
-            <div class="footer-right">
-
-                Powered By
-
-                Node.js |
-
-                Express |
-
-                TypeScript |
-
-                Winston |
-
-                Prometheus |
-
-                Chart.js
-
-            </div>
-
-        </footer>
-        <!-- ===================================== -->
-        <!-- FLOATING SYSTEM STATUS -->
-        <!-- ===================================== -->
-
-        <div id="connectionStatus" class="connection-status online">
-
-            🟢 Connected
 
         </div>
 
+    </section>
 
-        <!-- ===================================== -->
-        <!-- LOADING OVERLAY -->
-        <!-- ===================================== -->
+    <!-- ========================= -->
+    <!-- Placeholder for Charts -->
+    <!-- (Will implement later) -->
+    <!-- ========================= -->
 
-        <div id="loadingOverlay" class="loading-overlay">
+    <!-- ========================= -->
+    <!-- Charts Section -->
+    <!-- ========================= -->
 
-            <div class="loader"></div>
+    <section class="charts-section">
 
-            <h2>
+        <h2>System Metrics</h2>
 
-                Loading Dashboard...
+        <div class="charts-container">
 
-            </h2>
+            <!-- ========================= -->
+            <!-- Response Time Chart -->
+            <!-- ========================= -->
+
+            <div class="chart-card">
+
+                <h3>Response Time</h3>
+
+                <p>Request processing time over time</p>
+
+                <canvas id="responseTimeChart"></canvas>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- Error Distribution Chart -->
+            <!-- ========================= -->
+
+            <div class="chart-card">
+
+                <h3>Error Distribution</h3>
+
+                <p>Error category breakdown</p>
+
+                <canvas id="errorDistributionChart"></canvas>
+
+            </div>
 
         </div>
 
+    </section>
 
-        <!-- ===================================== -->
-        <!-- JAVASCRIPT -->
-        <!-- ===================================== -->
 
-        <script src="dashboard.js"></script>
 
-        <script>
+    <!-- ========================= -->
+    <!-- Placeholder for AI Analysis -->
+    <!-- ========================= -->
 
-            /*
-            ==========================================
-            Dashboard Startup
-            ==========================================
-            */
+    <!-- ========================= -->
+    <!-- AI Analysis Section -->
+    <!-- ========================= -->
 
-            window.addEventListener("load", () => {
+    <section class="analysis-section">
 
-                console.log("AI Observability Dashboard Started");
+        <h2>AI Analysis</h2>
 
-                /*
-                Hide loading screen
-                */
+        <div class="analysis-card">
 
-                const loading = document.getElementById("loadingOverlay");
+            <!-- Root Cause -->
 
-                if (loading) {
+            <div class="analysis-item">
 
-                    loading.style.display = "none";
+                <h3>Root Cause</h3>
 
-                }
+                <p id="analysisRootCause">
 
-                /*
-                Display current time
-                */
+                    Waiting for AI analysis...
 
-                updateClock();
+                </p>
 
-                setInterval(updateClock, 1000);
+            </div>
 
-                /*
-                Refresh dashboard every 5 seconds
-                */
 
-                if (typeof initializeDashboard === "function") {
+            <!-- Confidence -->
 
-                    initializeDashboard();
+            <div class="analysis-item">
 
-                }
+                <h3>Confidence</h3>
 
-            });
+                <p id="analysisConfidence">
 
-            /*
-            ==========================================
-            Live Clock
-            ==========================================
-            */
+                    0%
 
-            function updateClock() {
+                </p>
 
-                const clock = document.getElementById("currentTime");
+            </div>
 
-                const footerTime = document.getElementById("lastUpdated");
 
-                const now = new Date();
+            <!-- Recommendation -->
 
-                const formatted = now.toLocaleString();
+            <div class="analysis-item">
 
-                if (clock) {
+                <h3>Recommendation</h3>
 
-                    clock.innerHTML = formatted;
+                <p id="analysisRecommendation">
 
-                }
+                    Waiting for recommendation...
 
-                if (footerTime) {
+                </p>
 
-                    footerTime.innerHTML = formatted;
+            </div>
 
-                }
+        </div>
 
-            }
+    </section>
 
-        </script>
 
-    </div>
+    <!-- ========================= -->
+    <!-- Dashboard Script -->
+    <!-- ========================= -->
+
+    <script src="dashboard.js"></script>
 
 </body>
 

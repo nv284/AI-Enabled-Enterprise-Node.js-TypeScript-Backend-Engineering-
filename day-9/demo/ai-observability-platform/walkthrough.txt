@@ -1,0 +1,18 @@
+routes :
+
+1- http://localhost:3000/
+
+2- http://localhost:3000/metrics
+
+3-http://localhost:3000/health
+
+4-http://localhost:3000/ai-analysis
+
+5-http://localhost:3000/dashboard
+
+6-http://localhost:3000/dashboard/metrics
+
+7-http://localhost:3000/dashboard/data
+
+8-http://localhost:3000/dashboard/ping
+

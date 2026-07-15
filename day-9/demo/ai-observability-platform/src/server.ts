@@ -9,6 +9,7 @@ import monitoringRoutes from "./routes/monitoringRoutes.js";
 import metricsMiddleware from "./middleware/metricsMiddleware.js";
 import aiRoutes from "./routes/aiRoutes.js";
 import path from "path";
+import dashboardroutes from "./routes/dashboardRoutes.js";
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(errorHandler);
 app.use(metricsMiddleware);
 app.use(monitoringRoutes);
 app.use(aiRoutes);
+app.use(dashboardroutes);
 app.use(
 
     express.static(
