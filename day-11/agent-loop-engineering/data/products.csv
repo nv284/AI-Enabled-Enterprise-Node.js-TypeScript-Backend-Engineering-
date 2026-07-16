@@ -1,0 +1,21 @@
+ProductID,ProductName,Category,Brand,Price,Stock,Supplier,Rating
+P001,MacBook Air M3,Laptop,Apple,114999,35,Apple India,4.9
+P002,Inspiron 15,Laptop,Dell,58999,52,Dell India,4.5
+P003,ThinkPad E14,Laptop,Lenovo,64999,40,Lenovo India,4.7
+P004,Galaxy S25,Mobile,Samsung,79999,65,Samsung India,4.8
+P005,iPhone 17,Mobile,Apple,89999,30,Apple India,4.9
+P006,Redmi Note 15,Mobile,Xiaomi,18999,120,Xiaomi India,4.3
+P007,Noise ColorFit Pro,Smart Watch,Noise,4999,180,Noise India,4.2
+P008,Apple Watch Series 11,Smart Watch,Apple,45999,20,Apple India,4.9
+P009,Sony WH-1000XM6,Headphones,Sony,29999,48,Sony India,4.8
+P010,Boat Rockerz 550,Headphones,Boat,1999,210,Boat India,4.1
+P011,LG UltraGear 27,Monitor,LG,24999,28,LG India,4.6
+P012,Dell UltraSharp,Monitor,Dell,34999,18,Dell India,4.8
+P013,Canon EOS R50,Camera,Canon,67999,15,Canon India,4.7
+P014,Nikon Z30,Camera,Nikon,72999,14,Nikon India,4.7
+P015,HP LaserJet MFP,Printer,HP,18999,34,HP India,4.5
+P016,Epson EcoTank,Printer,Epson,22999,25,Epson India,4.6
+P017,Logitech MX Master 4,Mouse,Logitech,9999,72,Logitech India,4.9
+P018,Keychron K8 Pro,Keyboard,Keychron,8499,68,Keychron India,4.8
+P019,TP-Link Archer AX73,Router,TP-Link,7999,55,TP-Link India,4.6
+P020,Seagate Backup Plus,Storage,Seagate,6999,82,Seagate India,4.5

@@ -1,0 +1,18 @@
+{
+  "name": "agent-loop-engg",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Training: Agent Loop Engineering Fundamentals in TypeScript",
+  "type": "module",
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "scripts": {
+    "m1": "node modules/01-setup-and-concepts/src/hello.ts",
+    "m2": "node modules/02-perception-and-tools/src/run.ts",
+    "m3": "node modules/03-reasoning/src/run.ts",
+    "m4": "node modules/04-action-and-loop/src/run.ts",
+    "m5": "node modules/05-reflection-and-safety/src/run.ts",
+    "capstone": "node modules/06-capstone-data-analyst/src/cli.ts"
+  }
+}
