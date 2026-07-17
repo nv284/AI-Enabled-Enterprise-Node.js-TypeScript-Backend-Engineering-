@@ -1,0 +1,29 @@
+# v1 — the naive/beginner Dockerfile (Module 3 output)
+#
+# What's WRONG with this file? (you'll fix it in modules 4 and 5)
+#   1. Base image `node:20` is ~1.1 GB — huge.
+#   2. Copies everything (including node_modules if present) before install.
+#   3. Installs devDependencies AND ships them to production.
+#   4. Runs as root (default). Big security no-no.
+#   5. No .dockerignore awareness (fix is separate file).
+#   6. No layer caching strategy — every source change triggers `npm install`.
+#
+# Build:   docker build -f Dockerfile.v1-basic -t todo-api:v1 .
+# Run:     docker run --rm -p 3000:3000 todo-api:v1
+
+FROM node:20
+
+WORKDIR /app
+
+# Copy everything at once (bad for cache).
+COPY . .
+
+# Install ALL deps (including devDependencies) — needed to run `tsc`.
+RUN npm install
+
+# Compile TypeScript to JavaScript.
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["node", "dist/index.js"]

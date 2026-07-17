@@ -1,0 +1,47 @@
+# v2 — multi-stage build (Module 4 output)
+#
+# Wins over v1:
+#   - Final image contains ONLY compiled JS + production deps.
+#   - devDependencies (typescript, ts-node-dev, @types/*) never ship.
+#   - Base is `node:20-alpine` (~180 MB) instead of `node:20` (~1.1 GB).
+#   - package*.json copied before source — `npm ci` layer is cached
+#     across source-only changes.
+#
+# Build: docker build -f Dockerfile.v2-multistage -t todo-api:v2 .
+# Run:   docker run --rm -p 3000:3000 todo-api:v2
+
+# ---------- Stage 1: builder ----------
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy lockfiles first for maximum cache reuse.
+COPY package*.json ./
+
+# `npm ci` = clean, reproducible install from lockfile.
+# Includes devDependencies because we need `tsc` in this stage.
+RUN npm ci
+
+# Now copy source and build.
+COPY tsconfig.json ./
+COPY src ./src
+RUN npm run build
+
+# Prune to production-only deps so we can copy them verbatim into stage 2.
+RUN npm prune --omit=dev
+
+# ---------- Stage 2: runtime ----------
+FROM node:20-alpine AS runtime
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Copy only what runtime needs: production node_modules + compiled dist.
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY package.json ./
+
+EXPOSE 3000
+
+CMD ["node", "dist/index.js"]
